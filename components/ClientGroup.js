@@ -7,22 +7,26 @@ import Color from '../constants/Color';
 import Clients from './Clients';
 import IconDate from '../icons/IconDate';
 
-export default function ClientGroup({navigation}){
-    return (
-        <View style={styles.container}>
-            <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                    <View style={styles.iconDate}>
-                        <IconDate qhSize={15} qhColor={Color.Blue}/>
+export default class ClientGroup extends React.Component{
+
+
+    render(){
+        return (
+            <View style={styles.container}>
+                <View style={styles.card}>
+                    <View style={styles.cardHeader}>
+                        <View style={styles.iconDate}>
+                            <IconDate qhSize={15} qhColor={Color.Blue}/>
+                        </View>
+                        <Text style={styles.textHeader}>{this.props.client.date}</Text>
                     </View>
-                    <Text style={styles.textHeader}>01-02-2020</Text>
-                </View>
-                <View style={styles.cardBody}>
-                    <Clients navigation={navigation}/>
+                    <View style={styles.cardBody}>
+                        <Clients navigation={this.props.navigation} date={this.props.client.date} clients={this.props.client.clients}/>
+                    </View>
                 </View>
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({

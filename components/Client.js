@@ -1,30 +1,58 @@
 import React, { Component } from 'react';
 
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 //import { Icon } from 'react-native-elements';
 
 import IconDelete from '../icons/IconDelete'
 import IconNext from '../icons/IconNext';
 import Color from '../constants/Color';
-export default function Client({navigation}) 
+import { deleteClient } from '../databases/Schema';
+
+export default class Client extends React.Component 
 {
-    return(
-        <View style={styles.container}>
-            <View style={styles.card}>
-                <TouchableOpacity style={[styles.centerBox, styles.button]}>
-                <IconDelete qhColor={Color.White} qhSize={12} style={styles.icon}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.contentRight}
-                    onPress={() => navigation.navigate('CustomersScreen')}
-                >
-                    <Text style={{marginLeft: 10, fontWeight: 'bold'}}>Delete</Text>
-                    <View style={{justifyContent: 'center'}}>
-                        <IconNext  qhColor={Color.Red} qhSize={12} />
-                    </View>
-                </TouchableOpacity>
+    deleteClient = (id, date) => {
+        deleteClient(id, date).then((model) => {
+
+        }).catch((error) => {
+            console.log(error);
+        })
+        console.log(id);
+        console.log(date);
+    }
+
+    render(){
+        return(
+            <View style={styles.container}>
+                <View style={styles.card}>
+                    <TouchableOpacity 
+                        style={[styles.centerBox, styles.button]}
+                        onPress={() => Alert.alert(
+                            'Thông báo',
+                            'Bạn có chắc muốn xóa?',
+                            [
+                                {
+                                    text: "Cancel",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                },
+                                { text: "OK", onPress: () => this.deleteClient(this.props.client.id, this.props.date) }
+                            ]
+                        )}    
+                    >
+                    <IconDelete qhColor={Color.White} qhSize={12} style={styles.icon}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.contentRight}
+                        onPress={() => this.props.navigation.navigate('CustomersScreen')}
+                    >
+                        <Text style={{marginLeft: 10, fontWeight: 'bold'}}>{this.props.client.name}</Text>
+                        <View style={{justifyContent: 'center'}}>
+                            <IconNext  qhColor={Color.Red} qhSize={12} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({

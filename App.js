@@ -1,10 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+
 
 import React, { Component } from 'react';
 import {
@@ -20,6 +14,7 @@ import Database from './databases/Database';
 import ClientGroup from './components/ClientGroup';
 import { Header } from 'react-native-elements';
 import MainNavigator from './navigators/MainNavigator';
+import ClientModel from './models/ClientModel';
 
 class App extends Component
 {
@@ -32,19 +27,26 @@ class App extends Component
 		})
 	}
 
-	All = () => {
-		Database.ClientGroup.All().then((models) => {
-			console.log('Alls data');
-			console.log(models);
+	loadAllClient = () => {
+		ClientModel.All().then((model) => {
+			console.log(model);
+			model.forEach(element => {
+				console.log(element.clients);
+			});
 		}).catch((error) => {
 			console.log(error);
 		})
 	}
 
+
+
 	componentDidMount(){
-		//this.create({id: (new Date()).getTime(), date: '01-02-2020'})
-		console.log('After')
-		this.All();
+		//ClientModel.Insert({id: (new Date()).getTime(), name: 'Quach Hoai Nam'});
+		//this.loadAllClient();
+		// Database.Client.All().then((models) => {
+		// 	console.log(models);
+		// })
+
 	}
 
 	render(){

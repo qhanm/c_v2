@@ -10,6 +10,7 @@ const Insert = model => new Promise((resolve, reject) => {
    }).catch((error) => { reject(error) })
 })
 
+
 const All = () => new Promise((resolve, reject) => {
     Realm.open(Schema.databaseOptions).then(realm => {
         let alls = realm.objects(Schema.ClientGroup);

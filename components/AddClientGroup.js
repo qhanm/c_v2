@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { Input } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Constant from '../constants/Constant';
+import { insertClientGroup } from '../databases/Schema';
 
+import AlertCustom from '../components/AlertCustom';
 export default class AddClientGroup extends Component{
 
     constructor(props){
@@ -34,10 +34,25 @@ export default class AddClientGroup extends Component{
     _showError = () => {
         if(this.state.iShowError){
             return (
-                <Text style={styles.textError}>Tên nhóm không vượt quá 30 ký tự</Text>
+                <Text style={styles.textError}>Tên nhóm không được để trống, không vượt quá 30 ký tự</Text>
             )
         }else{
             return null;
+        }
+    }
+ 
+    insertClient = () => {
+        console.log(this.state.clientName);
+        if(this.state.clientName.length  == 0){
+            this.setState({iShowError: true});
+        }else{
+
+            insertClientGroup({id: (new Date()).getTime(), name: this.state.clientName}).then((model) => {
+                AlertCustom('Thông báo', 'Thêm khách hàng thành công');
+            }).catch((error) => {
+                console.log(error);
+                AlertCustom('Lỗi', JSON.stringify(error));
+            })
         }
     }
 
@@ -54,7 +69,7 @@ export default class AddClientGroup extends Component{
                     { this._showError() }
                 </View>
                 <View style={styles.card}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => this.insertClient()}>
                         <Text style={{color: Constant.Color.White, fontWeight: 'bold'}}>Lưu</Text>
                     </TouchableOpacity>
                 </View>
