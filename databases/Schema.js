@@ -25,6 +25,7 @@ const Customer = {
     primaryKey: 'id',
     properties: {
         id: 'int',
+        clientId: 'int',
         dateCalculator: 'string',
         price: 'int',
         name: 'string',
@@ -38,6 +39,8 @@ const Sheet = {
     primaryKey: 'id',
     properties: {
         id: 'int',
+        sheetNo: 'int',
+        foreignKey: 'int',
         value: 'float',
     }
 }
@@ -70,10 +73,16 @@ export const insertCustomer  = (model) => new Promise((resolve, reject) => {
 
         realm.write(() => {
             let customer = realm.objectForPrimaryKey(Schema.Customer, model.id);
+            //let getSheetId = realm.where(Schema.Sheet).max('id');
+            //console.log(getSheetId);
+            //return false;
             let sheet = customer.sheets;
             for(let i = 1; i <= 25; i++){
+                console.log((new Date()).getTime());
                 let modelSheet = {
-                    id: i,
+                    id: (new Date()).getTime() + (new Date()).getMilliseconds(),
+                    foreignKey: model.id,
+                    sheetNo: i,
                     value: 0
                 };
             
@@ -83,6 +92,12 @@ export const insertCustomer  = (model) => new Promise((resolve, reject) => {
             resolve(customer);
         })
     }).catch((error) => { reject(error) })
+})
+
+export const allCustomer = () => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let customers = realm.objects(Schema.Customer);
+    })
 })
 
 export const insertClientGroup = (model) => new Promise((resolve, reject) => {
