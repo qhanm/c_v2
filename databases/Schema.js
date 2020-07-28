@@ -38,9 +38,9 @@ const Sheet = {
     name: Constant.Schema.Sheet,
     primaryKey: 'id',
     properties: {
-        id: 'int',
+        id: 'string',
         sheetNo: 'int',
-        foreignKey: 'int',
+        customerId: 'int',
         value: 'float',
     }
 }
@@ -59,7 +59,7 @@ const Schema = {
     Customer: Constant.Schema.Customer,
 };
 
-export const insertCustomer  = (model) => new Promise((resolve, reject) => {
+export const insertCustomer  = (model, clientId) => new Promise((resolve, reject) => {
 
     let dateCurrent = Helpers.GetFullDateCurrent();
     let id = (new Date()).getTime();
@@ -68,20 +68,18 @@ export const insertCustomer  = (model) => new Promise((resolve, reject) => {
 
             model.dateCalculator = dateCurrent;
             model.id = id;
+            model.clientId = clientId;
             realm.create(Schema.Customer, model);
         })
 
         realm.write(() => {
             let customer = realm.objectForPrimaryKey(Schema.Customer, model.id);
-            //let getSheetId = realm.where(Schema.Sheet).max('id');
-            //console.log(getSheetId);
-            //return false;
+
             let sheet = customer.sheets;
             for(let i = 1; i <= 25; i++){
-                console.log((new Date()).getTime());
                 let modelSheet = {
-                    id: (new Date()).getTime() + (new Date()).getMilliseconds(),
-                    foreignKey: model.id,
+                    id: Helpers.Guid(),
+                    customerId: model.id,
                     sheetNo: i,
                     value: 0
                 };
@@ -94,10 +92,13 @@ export const insertCustomer  = (model) => new Promise((resolve, reject) => {
     }).catch((error) => { reject(error) })
 })
 
-export const allCustomer = () => new Promise((resolve, reject) => {
+export const allCustomer = (clientId) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
         let customers = realm.objects(Schema.Customer);
-    })
+        console.log(clientId);
+        console.log(customers);
+        resolve(customers);
+    }).catch((error) => { reject(error) })
 })
 
 export const insertClientGroup = (model) => new Promise((resolve, reject) => {
