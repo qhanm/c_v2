@@ -15,7 +15,7 @@ import ClientGroup from './components/ClientGroup';
 import { Header } from 'react-native-elements';
 import MainNavigator from './navigators/MainNavigator';
 import ClientModel from './models/ClientModel';
-
+// https://codesandbox.io/s/x29r438p3o?file=/src/components/NumberProvider.js
 class App extends Component
 {
 
