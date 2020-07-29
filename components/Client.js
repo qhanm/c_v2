@@ -7,9 +7,15 @@ import IconDelete from '../icons/IconDelete'
 import IconNext from '../icons/IconNext';
 import Color from '../constants/Color';
 import { deleteClient } from '../databases/Schema';
+import { SessionContext } from '../contexts/SessionContext';
 
 export default class Client extends React.Component 
 {
+    constructor(props){
+        super(props);
+        this.__onPressFunc = this.__onPressFunc.bind(this);
+    }
+
     deleteClient = (id, date) => {
         deleteClient(id, date).then((model) => {
 
@@ -20,37 +26,48 @@ export default class Client extends React.Component
         console.log(date);
     }
 
+    __onPressFunc = (sessionClient) => {
+        sessionClient.setTextHeader(this.props.client.name);
+        sessionClient.setClientId(this.props.client.id);
+        this.props.navigation.navigate('CustomersScreen');
+    }
+
     render(){
         return(
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <TouchableOpacity 
-                        style={[styles.centerBox, styles.button]}
-                        onPress={() => Alert.alert(
-                            'Thông báo',
-                            'Bạn có chắc muốn xóa?',
-                            [
-                                {
-                                    text: "Cancel",
-                                    onPress: () => console.log("Cancel Pressed"),
-                                    style: "cancel"
-                                },
-                                { text: "OK", onPress: () => this.deleteClient(this.props.client.id, this.props.date) }
-                            ]
-                        )}    
-                    >
-                    <IconDelete qhColor={Color.White} qhSize={12} style={styles.icon}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.contentRight}
-                        onPress={() => this.props.navigation.navigate('CustomersScreen')}
-                    >
-                        <Text style={{marginLeft: 10, fontWeight: 'bold'}}>{this.props.client.name}</Text>
-                        <View style={{justifyContent: 'center'}}>
-                            <IconNext  qhColor={Color.Red} qhSize={12} />
+            <SessionContext.Consumer>
+                {
+                    sessionClient =>
+                    <View style={styles.container}>
+                        <View style={styles.card}>
+                            <TouchableOpacity 
+                                style={[styles.centerBox, styles.button]}
+                                onPress={() => Alert.alert(
+                                    'Thông báo',
+                                    'Bạn có chắc muốn xóa?',
+                                    [
+                                        {
+                                            text: "Cancel",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        },
+                                        { text: "OK", onPress: () => this.deleteClient(this.props.client.id, this.props.date) }
+                                    ]
+                                )}    
+                            >
+                            <IconDelete qhColor={Color.White} qhSize={12} style={styles.icon}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.contentRight}
+                                onPress={() => this.__onPressFunc(sessionClient)}
+                            >
+                                <Text style={{marginLeft: 10, fontWeight: 'bold'}}>{this.props.client.name}</Text>
+                                <View style={{justifyContent: 'center'}}>
+                                    <IconNext  qhColor={Color.Red} qhSize={12} />
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                    </View>
+                }
+            </SessionContext.Consumer>
         )
     }
 }

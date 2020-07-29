@@ -6,7 +6,7 @@ import ClientModel from '../models/ClientModel';
 import { ScrollView } from 'react-native-gesture-handler';
 import realm from '../databases/Schema';
 import {allClientGroup} from '../databases/Schema';
-
+import { SessionContext } from "../contexts/SessionContext";
 export default class HomeScreen extends React.Component
 {    
     constructor(props){
@@ -20,6 +20,8 @@ export default class HomeScreen extends React.Component
         realm.addListener('change', () => {
             this.loadClient();
         })
+
+        const { setTextHeader } = React.useContext(SessionContext);
     }
 
     loadClient = () => {
@@ -47,6 +49,7 @@ export default class HomeScreen extends React.Component
 
     componentDidMount(){
         this.loadClient();
+        //this.setTextHeader('Quach hoai nam');
     }
 
     render(){
