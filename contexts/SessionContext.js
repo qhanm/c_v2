@@ -8,7 +8,7 @@ export class SessionProvider  extends Component
         super(props);
 
         this.state = {
-            textHeader: '',
+            textHeader: 'NHÓM BẢNG TÍNH',
             clientId: 0,
         }
 

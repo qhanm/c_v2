@@ -4,6 +4,7 @@ import Constant from '../constants/Constant';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {insertCustomer} from '../databases/Schema';
 import AlertCustom from './AlertCustom';
+
 export default class AddCustomer extends React.Component{
 
     constructor(props){
@@ -16,6 +17,9 @@ export default class AddCustomer extends React.Component{
             nameTreeError: '',
             isError: false,
         };
+
+        console.log(this.props);
+        
     }
 
     insertCustomer = () => {
@@ -39,7 +43,7 @@ export default class AddCustomer extends React.Component{
             return false;
         }
 
-        insertCustomer({name: this.state.name, nameTree: this.state.nameTree, price: this.state.price})
+        insertCustomer({name: this.state.name, nameTree: this.state.nameTree, price: this.state.price}, this.props.clientId)
         .then((model) => {
             AlertCustom('Thông báo', 'Thêm nông dân thành công');
         }).catch((error) => {

@@ -27,7 +27,7 @@ export default class Client extends React.Component
     }
 
     __onPressFunc = (sessionClient) => {
-        sessionClient.setTextHeader(this.props.client.name);
+        sessionClient.setTextHeader('NHÓM: ' + this.props.client.name);
         sessionClient.setClientId(this.props.client.id);
         this.props.navigation.navigate('CustomersScreen');
     }

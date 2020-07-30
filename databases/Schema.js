@@ -94,9 +94,7 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
 
 export const allCustomer = (clientId) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
-        let customers = realm.objects(Schema.Customer);
-        console.log(clientId);
-        console.log(customers);
+        let customers = realm.objects(Schema.Customer).filtered('clientId = ' + clientId);
         resolve(customers);
     }).catch((error) => { reject(error) })
 })

@@ -5,6 +5,8 @@ import IconBar from './IconBar';
 import IconBack from './IconBack';
 import IconAdd from './IconAdd';
 import IconDate from './IconDate';
+import IconPrice from './IconPrice';
+import IconCalculator from './IconCalculator';
 
 const Icon = {
     Delete: IconDelete,
@@ -14,6 +16,8 @@ const Icon = {
     Back: IconBack,
     Add: IconAdd,
     Date: IconDate,
+    Price: IconPrice,
+    Calculator: IconCalculator,
 };
 
 export default Icon;
