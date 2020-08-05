@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from '../icons/Icon';
 import Constant from '../constants/Constant';
@@ -6,13 +6,14 @@ import { SessionContext } from '../contexts/SessionContext';
 
 
 
-export default class HeaderCustom extends React.Component {
+export default class HeaderCustom extends Component {
     constructor(props){
         super(props);
+
         this.__onPressGoBack = this.__onPressGoBack.bind(this);
 
-        //console.log(props);
-
+        const {index, routes} = props.navigation.dangerouslyGetState();
+        console.log(routes);
     }
 
     __onPressGoBack = (navigation, sessionContext) => {
@@ -21,7 +22,7 @@ export default class HeaderCustom extends React.Component {
     }
 
     componentDidMount(){
-
+        
     }
 
     render(){

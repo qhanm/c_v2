@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import Constant from '../constants/Constant';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function CustomerDetail(){
+export default function CustomerDetail({navigation}){
     return (
         <ScrollView style={{marginBottom: 50}}>
             <View style={styles.container}> 
@@ -84,8 +84,11 @@ export default function CustomerDetail(){
                             />   
                             <Text style={styles.bodyRow3Right}>Vnđ</Text>
                         </View>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={{width: '100%', color: Constant.Color.White}}>Mở Khóa</Text>
+                        <TouchableOpacity 
+                            style={styles.button}
+                            onPress = {() => {navigation.navigate('CalculatorScreen')}}    
+                        >
+                            <Text style={{width: '100%', color: Constant.Color.White}}>Bắt Đầu Cân</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

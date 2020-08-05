@@ -22,8 +22,6 @@ export default class Client extends React.Component
         }).catch((error) => {
             console.log(error);
         })
-        console.log(id);
-        console.log(date);
     }
 
     __onPressFunc = (sessionClient) => {

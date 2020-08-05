@@ -28,16 +28,15 @@ export default class Customers extends React.Component{
         this.loadCustomer(this.props.clientId);
     }
 
-   render(){
-       console.log(this.state.customers);
-    return (
-        <View>
-           {
-               this.state.customers.map((item, i) => {
-                   return <Customer navigation={this.props.navigation} customer={item} key={i} />
-               })
-           }
-        </View>
-    )
+    render(){
+        return (
+            <View>
+            {
+                this.state.customers.map((item, i) => {
+                    return <Customer navigation={this.props.navigation} customer={item} key={i} />
+                })
+            }
+            </View>
+        )
    }
 }

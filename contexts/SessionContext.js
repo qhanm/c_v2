@@ -10,17 +10,22 @@ export class SessionProvider  extends Component
         this.state = {
             textHeader: 'NHÓM BẢNG TÍNH',
             clientId: 0,
+            customerId: 0,
         }
 
         this.setTextHeader = this.setTextHeader.bind(this);
         this.setClientId = this.setClientId.bind(this);
+        this.setCustomerId = this.setCustomerId.bind(this);
+    }
+
+    setCustomerId = (customerId) => {
+        this.setState({customerId: customerId});
     }
 
     setTextHeader = (text) => {
         this.setState({
             textHeader: text
         })
-        console.log(this.state.textHeader);
     }
 
     setClientId = (id) => {
@@ -35,6 +40,8 @@ export class SessionProvider  extends Component
                     setTextHeader: this.setTextHeader,
                     clientId: this.state.clientId,
                     setClientId: this.setClientId,
+                    customerId: this.state.customerId,
+                    setCustomerId: this.setCustomerId,
                 }}
             >
                 {this.props.children}

@@ -65,7 +65,6 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
     let id = (new Date()).getTime();
     Realm.open(databaseOptions).then((realm) => {
         realm.write(() => {
-
             model.dateCalculator = dateCurrent;
             model.id = id;
             model.clientId = clientId;
@@ -81,7 +80,7 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
                     id: Helpers.Guid(),
                     customerId: model.id,
                     sheetNo: i,
-                    value: 0
+                    value: -1
                 };
             
                 sheet.push(modelSheet);

@@ -9,7 +9,7 @@ export default function AddCustomerScreen({navigation}){
     return (
         <View>
             <HeaderCustom title="NHÓM: A" isBack={true} isAdd={false} navigation={navigation}/>
-            <CustomerDetail />
+            <CustomerDetail navigation={navigation}/>
         </View>
     )
 }
