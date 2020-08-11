@@ -91,6 +91,34 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
     }).catch((error) => { reject(error) })
 })
 
+export const getOneCustomer = (customerId, sheetNo) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        //let customer = realm.objectForPrimaryKey(Schema.Customer, customerId);
+        //let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId + ' AND sheetNo = ' + sheetNo);
+        let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId);
+        resolve(customer);
+    }).catch((error) => { reject(error) })
+})
+
+export const getCountSheetNoCustomer = (customerId) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let count = realm.objects(Schema.Sheet).filtered('customerId = $0', customerId);
+        resolve(count.length);
+    }).catch((error) => { reject(error) })
+})
+
+export const updateSheet = (sheetId, value) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let sheet = realm.objectForPrimaryKey(Schema.Sheet, sheetId);
+        realm.write(() => {
+            sheet.value = value;
+        })
+        resolve(sheet);
+    }).catch((error) => {
+        reject(error);
+    })
+}) 
+
 export const allCustomer = (clientId) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
         let customers = realm.objects(Schema.Customer).filtered('clientId = ' + clientId);

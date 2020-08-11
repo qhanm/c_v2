@@ -12,17 +12,20 @@ export default class HeaderCustom extends Component {
 
         this.__onPressGoBack = this.__onPressGoBack.bind(this);
 
-        const {index, routes} = props.navigation.dangerouslyGetState();
-        console.log(routes);
+        
+        //console.log(routes[index].name);
     }
 
     __onPressGoBack = (navigation, sessionContext) => {
-        sessionContext.setTextHeader('NHÓM BẢNG TÍNH');
+        const {index, routes} = this.props.navigation.dangerouslyGetState();
+        if(routes[index].name == 'CustomersScreen'){
+            sessionContext.setTextHeader('NHÓM BẢNG TÍNH');
+        }
         navigation.goBack();
     }
 
     componentDidMount(){
-        
+        //console.log(this.routes);
     }
 
     render(){
@@ -34,7 +37,7 @@ export default class HeaderCustom extends Component {
                         <View style={[styles.containerHeader, {width: '15%'}]}>
                             {
                                 this.props.isBack ? 
-                                (<TouchableOpacity onPress={ () => {sessionContext.setTextHeader('NHÓM BẢNG TÍNH'); this.props.navigation.goBack()} } style={{alignItems: 'baseline'}}>
+                                (<TouchableOpacity onPress={ () => {this.__onPressGoBack(this.props.navigation, sessionContext)} } style={{alignItems: 'baseline'}}>
                                     <Icon.Back qhSize={18} qhColor={Constant.Color.White} qhStyle={{ marginLeft: 10 }} />
                                 </TouchableOpacity>)
                                 : 

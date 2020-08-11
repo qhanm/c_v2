@@ -2,13 +2,17 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Constant from '../constants/Constant';
 import Icon from '../icons/Icon';
+import { SessionContext } from '../contexts/SessionContext';
 
 export default function Customer({customer, navigation}){
+
+    const { setCustomerId } = React.useContext(SessionContext);
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.navigate('CustomerDetailScreen')}>
+                    <TouchableOpacity onPress={() => { setCustomerId(customer.id); navigation.navigate('CustomerDetailScreen') }}>
                         <Text style={{marginLeft: 20, color: Constant.Color.Blue, fontWeight: 'bold', fontSize: 16}}>
                             {customer.name + ' - ' + customer.nameTree}
                         </Text>
