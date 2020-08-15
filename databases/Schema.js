@@ -30,6 +30,7 @@ const Customer = {
         price: 'int',
         name: 'string',
         nameTree: 'string',
+        numberPackaging: {type: 'int', default: 0},
         sheets: {type: 'list', objectType: Constant.Schema.Sheet},
     }
 }
@@ -79,8 +80,8 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
                 let modelSheet = {
                     id: Helpers.Guid(),
                     customerId: model.id,
-                    sheetNo: i,
-                    value: -1
+                    sheetNo: 1,
+                    value: 0
                 };
             
                 sheet.push(modelSheet);
@@ -91,11 +92,46 @@ export const insertCustomer  = (model, clientId) => new Promise((resolve, reject
     }).catch((error) => { reject(error) })
 })
 
+export const getTotalSheet = (customerId) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let sheets = realm.objects(Schema.Sheet).filtered('customerId = $0', customerId);
+        resolve(sheets.length / 25);
+    }).catch((error) => {reject(error)})
+})
+
+export const addSheet = (customerId) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let sheets = realm.objects(Schema.Sheet).filtered('customerId = $0', customerId).sorted('sheetNo', true);
+
+        let customer = realm.objectForPrimaryKey(Schema.Customer, sheets[0].customerId);
+        let sheetNo = sheets[0].sheetNo + 1;
+        console.log(sheets[0]);
+
+        realm.write(() => {
+            let sheets = customer.sheets;
+            for(let i = 1; i <= 25; i++)
+            {
+                let modelSheet = {
+                    id: Helpers.Guid(),
+                    customerId: customer.id,
+                    sheetNo: sheetNo,
+                    value: 0
+                };
+                sheets.push(modelSheet);
+            }
+            resolve(customer);
+        })
+    }).catch((error) => {
+        reject(error);
+        console.log(error);
+    })
+})
+
 export const getOneCustomer = (customerId, sheetNo) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
         //let customer = realm.objectForPrimaryKey(Schema.Customer, customerId);
-        //let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId + ' AND sheetNo = ' + sheetNo);
-        let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId);
+        let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId + ' AND sheetNo = ' + sheetNo);
+        //let customer = realm.objects(Schema.Sheet).filtered('customerId =' + customerId);
         resolve(customer);
     }).catch((error) => { reject(error) })
 })
@@ -118,6 +154,24 @@ export const updateSheet = (sheetId, value) => new Promise((resolve, reject) => 
         reject(error);
     })
 }) 
+
+export const updateCustomer = (id, value, type) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let customerData = realm.objectForPrimaryKey(Schema.Customer, id);
+        realm.write(() => {
+            if(type == 'numberPackaging'){
+                customerData.numberPackaging = value;
+            }else if(type == 'price'){
+                customerData.price = value;
+            }
+        })
+        console.log(value);
+        console.log(customerData);
+        resolve(customerData);
+    }).catch((error) => {
+        reject(error);
+    })
+})
 
 export const allCustomer = (clientId) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
@@ -169,6 +223,24 @@ export const deleteClient = (id, date) => new Promise((resolve, reject) => {
             }
         })
        
+    }).catch((error) => { reject(error) })
+})
+
+export const deleteCustomer = (customerId) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let customer = realm.objectForPrimaryKey(Schema.Customer, customerId);
+        if(customer !== undefined){
+            realm.write(() => {
+                realm.delete(customer);
+            })
+        }
+    }).catch((error) => {reject(error)});
+})
+
+export const getCustomer = (customerId) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm) => {
+        let customer = realm.objectForPrimaryKey(Schema.Customer, customerId);
+        resolve(customer);
     }).catch((error) => { reject(error) })
 })
 

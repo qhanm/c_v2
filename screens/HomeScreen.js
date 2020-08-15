@@ -7,9 +7,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import realm from '../databases/Schema';
 import {allClientGroup} from '../databases/Schema';
 export default class HomeScreen extends React.Component
-{    
+{
+    _isMounted = false;
+
     constructor(props){
         super(props);
+        this._isMounted = true;
 
         this.state = {
             clients: [],
@@ -19,11 +22,18 @@ export default class HomeScreen extends React.Component
         realm.addListener('change', () => {
             this.loadClient();
         })
+
+        this.loadClient = this.loadClient.bind(this);
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
     loadClient = () => {
         allClientGroup().then((models) => {
-            console.log(models);
             this.setState({
                 clients: models,
             });

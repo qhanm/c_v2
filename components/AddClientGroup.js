@@ -15,6 +15,8 @@ export default class AddClientGroup extends Component{
         }
 
         this.getClientInput = this.getClientInput.bind(this);
+        this._showError = this._showError.bind(this);
+        this.insertClient = this.insertClient.bind(this);
     }
 
     getClientInput(text) {

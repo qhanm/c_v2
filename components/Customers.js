@@ -1,17 +1,24 @@
 import React, { useEffect } from 'react';
 import {View, Text} from 'react-native';
 import Customer from './Customer';
-import { allCustomer } from '../databases/Schema';
+import realm, {allCustomer, deleteCustomer} from '../databases/Schema';
 import AlertCustom from './AlertCustom';
 
 export default class Customers extends React.Component{
-   
+    _isMounted = false;
+
     constructor(props){
         super(props);
 
         this.state = {
             customers: [],
         }
+        realm.addListener('change', () => {
+            this.loadCustomer(this.props.clientId);
+        })
+
+        this.loadCustomer = this.loadCustomer.bind(this);
+        this.__deleteCustomer = this.__deleteCustomer.bind(this);
     }
 
     loadCustomer = (clientId) => {
@@ -25,7 +32,25 @@ export default class Customers extends React.Component{
     }
 
     componentDidMount(){
+        this._isMounted = true;
         this.loadCustomer(this.props.clientId);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
+    __deleteCustomer = (customerId) => {
+        deleteCustomer(customerId).then(() => {
+
+        }).catch((error) => {
+            AlertCustom('Lỗi', JSON.stringify(error));
+            console.warn(error);
+        })
     }
 
     render(){
@@ -33,7 +58,11 @@ export default class Customers extends React.Component{
             <View>
             {
                 this.state.customers.map((item, i) => {
-                    return <Customer navigation={this.props.navigation} customer={item} key={i} />
+                    return <Customer
+                        navigation={this.props.navigation}
+                        customer={item} key={i}
+                        __deleteCustomer={this.__deleteCustomer}
+                    />
                 })
             }
             </View>

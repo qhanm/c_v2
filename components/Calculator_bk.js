@@ -49,7 +49,7 @@ export default class Calculator extends Component
 
         this.loadCustomer(this.props.customerId);
 
-            }
+    }
 
     __updateValueSheet = (sheetId, value) => {
         //console.log(sheetId);

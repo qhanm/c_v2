@@ -14,6 +14,7 @@ export default class Client extends React.Component
     constructor(props){
         super(props);
         this.__onPressFunc = this.__onPressFunc.bind(this);
+        this.deleteClient = this.deleteClient.bind(this);
     }
 
     deleteClient = (id, date) => {

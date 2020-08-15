@@ -12,14 +12,14 @@ export default class AddCustomer extends React.Component{
         this.state = {
             price: 0,
             name: '',
+            bkg: 0,
             nameTree: '',
             nameError: '',
             nameTreeError: '',
             isError: false,
         };
 
-        console.log(this.props);
-        
+        this.insertCustomer = this.insertCustomer.bind(this);
     }
 
     insertCustomer = () => {
@@ -43,7 +43,7 @@ export default class AddCustomer extends React.Component{
             return false;
         }
 
-        insertCustomer({name: this.state.name, nameTree: this.state.nameTree, price: this.state.price}, this.props.clientId)
+        insertCustomer({name: this.state.name, nameTree: this.state.nameTree, price: this.state.price, numberPackaging: this.state.bkg}, this.props.clientId)
         .then((model) => {
             AlertCustom('Thông báo', 'Thêm nông dân thành công');
         }).catch((error) => {
@@ -51,7 +51,6 @@ export default class AddCustomer extends React.Component{
             AlertCustom('Error', JSON.stringify(error));
         })
     }
-
 
     render(){
         return (
@@ -91,6 +90,17 @@ export default class AddCustomer extends React.Component{
                         ) 
                         : null
                     }
+                    <View style={styles.row}>
+                        <Text style={styles.colLeft}>
+                            Bao/Kg
+                        </Text>
+                        <TextInput
+                            style={styles.colRight}
+                            keyboardType='numeric'
+                            placeholder='0'
+                            onChangeText={(number) => this.setState({bkg: parseInt(number)})}
+                        />
+                    </View>
                     <View style={styles.row}> 
                         <Text style={styles.colLeft}>
                             Giá Mua
@@ -98,7 +108,7 @@ export default class AddCustomer extends React.Component{
                         <TextInput 
                             style={styles.colRight} 
                             keyboardType='numeric'
-                            placeholder='Có thể để trống'
+                            placeholder='0'
                             onChangeText={(number) => this.setState({price: parseInt(number)})}  
                         />
                     </View>

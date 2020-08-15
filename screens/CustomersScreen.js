@@ -4,6 +4,7 @@ import HeaderCustom from '../components/HeaderCustom';
 import ClientGroup from '../components/ClientGroup';
 import Customers from '../components/Customers';
 import { SessionContext } from '../contexts/SessionContext';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class CustomersScreen extends React.Component{
     render(){
@@ -13,7 +14,9 @@ export default class CustomersScreen extends React.Component{
                    sessionContext => 
                    <View>
                         <HeaderCustom title="NHÓM: A" isBack={true} isAdd={true} navigation={this.props.navigation} moveScreen='AddCustomerScreen'/>
-                        <Customers navigation={this.props.navigation} clientId={sessionContext.clientId}/>
+                        <ScrollView style={{marginBottom: 70}}>
+                            <Customers navigation={this.props.navigation} clientId={sessionContext.clientId}/>
+                        </ScrollView>
                     </View>
                }
            </SessionContext.Consumer>
