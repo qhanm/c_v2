@@ -18,8 +18,11 @@ export default class HeaderCustom extends Component {
 
     __onPressGoBack = (navigation, sessionContext) => {
         const {index, routes} = this.props.navigation.dangerouslyGetState();
+        console.log(routes[index].name);
         if(routes[index].name == 'CustomersScreen'){
             sessionContext.setTextHeader('NHÓM BẢNG TÍNH');
+        }else if(routes[index].name == 'CustomerDetailScreen'){
+            //navigation.state.params.onNavigateBack({data: '123'})
         }
         navigation.goBack();
     }

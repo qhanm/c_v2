@@ -33,6 +33,8 @@ export default class Customers extends React.Component{
 
     componentDidMount(){
         this._isMounted = true;
+        console.log('customerssssssssss')
+
         this.loadCustomer(this.props.clientId);
     }
 
@@ -61,6 +63,8 @@ export default class Customers extends React.Component{
                     return <Customer
                         navigation={this.props.navigation}
                         customer={item} key={i}
+                        clientId = {this.props.clientId}
+                        loadCustomer={this.loadCustomer}
                         __deleteCustomer={this.__deleteCustomer}
                     />
                 })

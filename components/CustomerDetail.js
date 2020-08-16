@@ -50,7 +50,7 @@ export default class CustomerDetail extends Component{
                 totalB += 1;
             }
         })
-        this.setState({totalWeight: totalWeight / 10, totalB, totalBB: totalB / customer.numberPackaging});
+        this.setState({totalWeight: totalWeight / 10, totalB, totalBB: parseFloat(totalB / customer.numberPackaging).toFixed(2)});
     }
 
     __updateData = (id, value, type) => {
@@ -175,7 +175,7 @@ export default class CustomerDetail extends Component{
                                     placeholder='0'
                                     keyboardType='numeric'
                                     editable={false}
-                                    value={`${totalWeight - totalBB}`}
+                                    value={`${parseFloat(totalWeight - totalBB).toFixed(2)}`}
                                 />
                                 <Text style={styles.bodyRow3Right}>Kg</Text>
                             </View>
@@ -197,7 +197,7 @@ export default class CustomerDetail extends Component{
                                     placeholder='0'
                                     keyboardType='numeric'
                                     editable={false}
-                                    value={`${Helpers.formatMoney((totalWeight - totalBB) * customer.price)}`}
+                                    value={`${Helpers.formatMoney(parseFloat((totalWeight - totalBB)).toFixed(2) * customer.price)}`}
                                 />
                                 <Text style={styles.bodyRow3Right}>Vnđ</Text>
                             </View>

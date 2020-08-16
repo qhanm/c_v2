@@ -136,6 +136,13 @@ export const getOneCustomer = (customerId, sheetNo) => new Promise((resolve, rej
     }).catch((error) => { reject(error) })
 })
 
+// export const getCustomer = (customerId) => new Promise((resolve, reject) => {
+//     Realm.open(databaseOptions).then((realm) => {
+//         let customer = realm.objectForPrimaryKey(Schema.Customer, customerId);
+//         resolve(customer);
+//     }).catch((error) => { reject(error) })
+// })
+
 export const getCountSheetNoCustomer = (customerId) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
         let count = realm.objects(Schema.Sheet).filtered('customerId = $0', customerId);

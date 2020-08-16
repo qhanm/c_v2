@@ -3,19 +3,49 @@ import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import Constant from '../constants/Constant';
 import Icon from '../icons/Icon';
 import { SessionContext } from '../contexts/SessionContext';
-import {deleteCustomer} from "../databases/Schema";
+import realm, {deleteCustomer, getCustomer} from "../databases/Schema";
 import AlertCustom from "./AlertCustom";
+import Helpers from "../utils/Helpers";
 
 export default class Customer extends Component{
-
     constructor(props){
         super(props);
+
+        this.state = {
+            totalWeight: 0,
+            priceResult: 0,
+            customer: this.props.customer,
+        }
+        realm.addListener('change', () => {
+
+        })
     }
 
+    componentDidMount(){
+        let {totalWeight, priceResult} = this.state;
+        let {customer} = this.state;
+        let weight = 0;
+        let price = 0;
+        let totalCount = 0
+        customer.sheets.map((item, i) => {
+            weight = weight + item.value;
+            if(item.value > 0){
+                totalCount += 1;
+            }
+        })
+
+        weight = parseFloat((weight / 10) - (totalCount / customer.numberPackaging)).toFixed(2);
+        this.setState({totalWeight: weight, priceResult: (weight * customer.price)});
+    }
+
+    componentWillUnmount() {
+
+    }
     //const { setCustomerId } = React.useContext(SessionContext);
 
     render(){
         let {customer, navigation} = this.props;
+
         return (
             <SessionContext.Consumer>
                 {
@@ -23,7 +53,10 @@ export default class Customer extends Component{
                         <View style={styles.container}>
                         <View style={styles.card}>
                             <View style={styles.header}>
-                                <TouchableOpacity onPress={() => { sessionContext.setCustomerId(customer.id); navigation.navigate('CustomerDetailScreen') }}>
+                                <TouchableOpacity onPress={() => {
+                                    sessionContext.setCustomerId(customer.id);
+                                    navigation.navigate('CustomerDetailScreen')
+                                }}>
                                     <Text style={{marginLeft: 20, color: Constant.Color.Blue, fontWeight: 'bold', fontSize: 16}}>
                                         {customer.name + ' - ' + customer.nameTree}
                                     </Text>
@@ -53,11 +86,11 @@ export default class Customer extends Component{
                                 </View>
                                 <View style={styles.row}>
                                     <Icon.Calculator qhSize={14} qhColor={Constant.Color.Blue} qhStyle={styles.sMarginLef}/>
-                                    <Text style={styles.sMarginLef}>KL: 0 Kg x {customer.price} VND</Text>
+                                    <Text style={styles.sMarginLef}>KL: {this.state.totalWeight} Kg x {customer.price} VND</Text>
                                 </View>
                                 <View style={styles.row}>
                                     <Icon.Price qhSize={14} qhColor={Constant.Color.Red} qhStyle={styles.sMarginLef}/>
-                                    <Text style={[styles.sMarginLef, {marginLeft: 5}]}>TT: 0 VND</Text>
+                                    <Text style={[styles.sMarginLef, {marginLeft: 5}]}>TT: {Helpers.formatMoney(this.state.priceResult)} VND</Text>
                                 </View>
                             </View>
                         </View>
